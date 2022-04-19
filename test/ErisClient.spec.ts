@@ -3,6 +3,8 @@
 //@ts-ignore - TypeScript didn't like this way of importing
 import { ErisClient } from '../src';
 
+jest.mock('redis', () => jest.requireActual('redis-mock'));
+
 describe('ErisBot', () => {
   let erisClient: ErisClient;
   // Create a mock discord client
@@ -24,5 +26,11 @@ describe('ErisBot', () => {
   it('should be able to login', () => {
     erisClient.bot.login();
     expect(discordClient.login).toHaveBeenCalled();
+  });
+
+  it('should have created a redis instance', () => {
+    const redis = erisClient.redis;
+    expect(redis).toBeDefined();
+    expect(redis.connected).toBe(false);
   });
 });
