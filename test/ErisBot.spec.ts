@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+//@ts-ignore - TypeScript didn't like this way of importing
 import { ErisClient } from '../src';
 
 describe('ErisBot', () => {
   let erisClient: ErisClient;
   // Create a mock discord client
-  let discordClient = {
+  const discordClient = {
     login: jest.fn(),
     on: jest.fn(),
   };
