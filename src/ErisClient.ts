@@ -1,9 +1,10 @@
 import { Client, Message } from 'discord.js';
+import Middleware from './types/Middleware';
 
 export default class ErisClient {
-  bot: Client;
-  constructor(discordClient: Client) {
-    this.bot = discordClient;
+  public static middleware: Middleware[] = [];
+
+  constructor(public bot: Client) {
     this.bot.on('ready', () => this.onReady());
     this.bot.on('messageCreate', msg => this.onMessage(msg));
   }
