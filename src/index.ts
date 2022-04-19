@@ -1,1 +1,5 @@
-export const myPackage = (taco = ''): string => `${taco} from my package`;
+import ErisClient from './ErisClient';
+
+module.exports = {
+  ErisClient,
+};

@@ -46,7 +46,9 @@
     "url": "https://github.com/marnixah/eris-boreas/issues"
   },
   "homepage": "https://github.com/marnixah/eris-boreas#readme",
-  "dependencies": {},
+  "dependencies": {
+    "discord.js": "^13.6.0"
+  },
   "devDependencies": {
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.25",
