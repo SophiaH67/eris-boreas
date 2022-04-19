@@ -1,9 +1,12 @@
 import { Client, Message } from 'discord.js';
+import { createClient } from 'redis';
 
 export default class ErisClient {
   bot: Client;
+  public redis = createClient();
   constructor(discordClient: Client) {
     this.bot = discordClient;
+
     this.bot.on('ready', () => this.onReady());
     this.bot.on('messageCreate', msg => this.onMessage(msg));
   }
@@ -12,8 +15,10 @@ export default class ErisClient {
     return 'Eris';
   }
 
-  onReady() {
-    console.log(`${this.name} is ready!`);
+  async onReady() {
+    await this.redis.connect();
+    const ping = await this.redis.ping();
+    console.log(`${this.name} is ready!, database ping: ${ping}`);
   }
 
   onMessage(msg: Message) {
