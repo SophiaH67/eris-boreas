@@ -1,7 +1,7 @@
 import { ErisClient } from '../src';
 
 describe('ErisBot', () => {
-  let erisClient: ErisBot;
+  let erisClient: ErisClient;
   // Create a mock discord client
   let discordClient = {
     login: jest.fn(),
