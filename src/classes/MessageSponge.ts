@@ -35,6 +35,11 @@ export default class MessageSponge {
       return;
     } else if (conversation) {
       conversation.finished = true;
+      /* Remove "also" from the end of every message */
+      conversation.messages.forEach(m => {
+        m.content = m.content.replace(/also$/i, '');
+      });
+      return conversation;
     }
   }
 }
