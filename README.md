@@ -31,8 +31,10 @@ class MyClient extends ErisClient {
 
 const discordClient = new Client();
 const erisClient = new MyClient(discordClient);
-erisClient.bot.login('token');
+erisClient.bot.login('my secret discord bot token');
 ```
+
+For instructions on acquiring a token, see the [discord.js documentation](https://discordjs.guide/preparations/setting-up-a-bot-application.html).
 
 [build-img]: https://github.com/marnixah/eris-boreas/actions/workflows/release.yml/badge.svg
 [build-url]: https://github.com/marnixah/eris-boreas/actions/workflows/release.yml
