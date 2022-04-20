@@ -5,6 +5,10 @@ import * as relexer from 'relexer';
 import { Stream } from 'stream';
 import Directive from './Directive';
 
+/**
+ * This class is responsible for extracting all directives from a message.
+ * For definition of a directive see the class `Directive`.
+ */
 export default class MessageLexer {
   private rules: relexer.Rules = [
     /* A directive is either at the beginning, or preceded by whitespace.

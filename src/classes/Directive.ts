@@ -1,3 +1,7 @@
+/**
+ * A directive is a full command with all args included.
+ * Parsing of the content of a directive is done at a later stage.
+ */
 export default class Directive {
   public terminator: '!' | '?' | '.' | '';
   constructor(public value: string) {
