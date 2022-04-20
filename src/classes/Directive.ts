@@ -1,17 +1,10 @@
 /**
  * A directive is a full command with all args included.
  * Parsing of the content of a directive is done at a later stage.
+ *
+ * The reason this is a class and not just a string is for future
+ * flexibility.
  */
 export default class Directive {
-  public terminator: '!' | '?' | '.' | '';
-  constructor(public value: string) {
-    // Check last character for terminator
-    const lastChar = this.value.charAt(this.value.length - 1);
-    if (lastChar === '!' || lastChar === '?' || lastChar === '.') {
-      this.terminator = lastChar;
-      this.value = this.value.substring(0, this.value.length - 1);
-    } else {
-      this.terminator = '';
-    }
-  }
+  constructor(public value: string) {}
 }
