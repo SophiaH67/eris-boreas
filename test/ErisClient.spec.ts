@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/require-await */
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 //@ts-ignore - TypeScript didn't like this way of importing
 import { ErisClient } from '../src';
-
-jest.mock('redis', () => jest.requireActual('redis-mock'));
 
 describe('ErisBot', () => {
   let erisClient: ErisClient;
@@ -11,6 +11,11 @@ describe('ErisBot', () => {
   const discordClient = {
     login: jest.fn(),
     on: jest.fn(),
+  };
+
+  const redis = {
+    connect: jest.fn(async () => {}),
+    ping: jest.fn(async () => 'PONG'),
   };
 
   it('should create an instance', () => {
@@ -29,8 +34,23 @@ describe('ErisBot', () => {
   });
 
   it('should have created a redis instance', () => {
-    const redis = erisClient.redis;
-    expect(redis).toBeDefined();
-    expect(redis.connected).toBe(false);
+    expect(erisClient.redis).toBeDefined();
+    // For future tests, we'll need to mock the redis client
+    erisClient.redis = redis;
+  });
+
+  it('should have a name', () => {
+    expect(erisClient.name).toBe('Eris');
+  });
+
+  it('should not crash on onReady', () => {
+    erisClient.onReady();
+  });
+
+  it('should not crash on onMessage', () => {
+    const msg = {
+      content: '',
+    };
+    erisClient.onMessage(msg);
   });
 });
