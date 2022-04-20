@@ -1,14 +1,11 @@
 import { Client, Message } from 'discord.js';
 import { createClient } from 'redis';
-import MessageSponge from './classes/MessageSponge';
 
 export default class ErisClient {
   bot: Client;
-  sponge: MessageSponge;
   public redis = createClient();
   constructor(discordClient: Client) {
     this.bot = discordClient;
-    this.sponge = new MessageSponge(this);
 
     this.bot.on('ready', () => this.onReady());
     this.bot.on('messageCreate', msg => this.onMessage(msg));
@@ -25,9 +22,6 @@ export default class ErisClient {
   }
 
   onMessage(msg: Message) {
-    /* Unchunk the message */
-    const conversation = this.sponge.onMessage(msg);
-    if (!conversation) return;
-    /* Handle the message */
+    console.log(`${this.name} received message: ${msg.content}`);
   }
 }
