@@ -16,7 +16,6 @@ export default class ErisClient {
   }
 
   async onReady() {
-    console.error(this.redis);
     await this.redis.connect();
     const ping = await this.redis.ping();
     console.log(`${this.name} is ready!, database ping: ${ping}`);
