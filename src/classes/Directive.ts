@@ -6,5 +6,14 @@
  * flexibility.
  */
 export default class Directive {
-  constructor(public value: string) {}
+  public language: string | undefined;
+  constructor(public value: string) {
+    this.language = this.value.startsWith('```')
+      ? (() => {
+          const language = this.value.split('```')[1].split(/ |\n/)[0];
+          this.value = this.value.replace(/```/g, '').trim();
+          return language;
+        })()
+      : undefined;
+  }
 }
