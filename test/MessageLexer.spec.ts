@@ -24,5 +24,5 @@ describe('Lexer', () => {
     expect(directives[0].value).toBe('<@178210163369574401>');
     expect(directives[1].value).toBe('What is the weather like today?');
     expect(directives[2].value).toBe('This is a code block');
-  }
+  });
 });
