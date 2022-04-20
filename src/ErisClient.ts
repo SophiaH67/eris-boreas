@@ -1,5 +1,6 @@
 import { Client, Message } from 'discord.js';
 import { createClient } from 'redis';
+import MessageLexer from './classes/MessageLexer';
 
 export default class ErisClient {
   bot: Client;
@@ -21,7 +22,10 @@ export default class ErisClient {
     console.log(`${this.name} is ready!, database ping: ${ping}`);
   }
 
-  onMessage(msg: Message) {
+  async onMessage(msg: Message) {
     console.log(`${this.name} received message: ${msg.content}`);
+    const lexer = new MessageLexer(msg.content);
+    const directives = await lexer.lex();
+    directives;
   }
 }
