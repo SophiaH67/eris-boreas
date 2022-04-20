@@ -8,15 +8,12 @@
 export default class Directive {
   public language: string | undefined;
   constructor(public value: string) {
-    this.language = this.value.startsWith('```')
-      ? (() => {
-          const language = this.value.split('```')[1].split(/ |\n/)[0];
-          this.value = this.value
-            .replace(`\`\`\`${language}`, '')
-            .replace(/```/g, '')
-            .trim();
-          return language;
-        })()
-      : undefined;
+    if (this.value.startsWith('```')) {
+      const parts = this.value.split('```');
+      this.language = parts[1].split(/ |\n/)[0];
+      this.value = this.value.replace('```' + this.language, '');
+      this.value = this.value.replace('```', '');
+      this.value = this.value.trim();
+    }
   }
 }
