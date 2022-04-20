@@ -10,4 +10,10 @@ describe('Directive', () => {
     const directive = new Directive('<@178210163369574401>');
     expect(directive.value).toBe('<@178210163369574401>');
   });
+
+  it('should parse a language', () => {
+    const directive = new Directive('```json\n{ "hello": "world" }\n```');
+    expect(directive.language).toBe('json');
+    expect(directive.value).toBe('{ "hello": "world" }');
+  });
 });
