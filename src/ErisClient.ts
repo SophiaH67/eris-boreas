@@ -27,6 +27,6 @@ export default class ErisClient {
     console.log(`${this.name} received message: ${msg.content}`);
     const lexer = new MessageLexer(msg.content);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const directives = await lexer.lex();
+    const directives = lexer.directives;
   }
 }

@@ -24,8 +24,4 @@ export default class MessageLexer {
         text => new Directive(text.replace('CODEBLOCK_NEWLINE', '\n').trim())
       );
   }
-
-  async lex(): Promise<Directive[]> {
-    return this.directives;
-  }
 }
