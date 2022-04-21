@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/require-await */
 import { Client, Message } from 'discord.js';
 import { createClient } from 'redis';
 import MessageLexer from './classes/MessageLexer';
