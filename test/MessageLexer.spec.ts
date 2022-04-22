@@ -1,7 +1,7 @@
 import MessageLexer from '../src/classes/MessageLexer';
 
 describe('Lexer', () => {
-  it('should lex a simple string', async () => {
+  it('should lex a simple string', () => {
     const lexer = new MessageLexer(`<@178210163369574401>
     
     What is the weather like today?`);
@@ -11,7 +11,7 @@ describe('Lexer', () => {
     expect(directives[1].value).toBe('What is the weather like today?');
   });
 
-  it('should lex a string with code blocks', async () => {
+  it('should lex a string with code blocks', () => {
     const lexer = new MessageLexer(`<@178210163369574401>
     
     What is the weather like today?
