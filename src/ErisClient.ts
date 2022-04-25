@@ -1,14 +1,11 @@
 /* eslint-disable @typescript-eslint/require-await */
 import { Client, Message } from 'discord.js';
 import { createClient } from 'redis';
-import type Command from './classes/commands/Command';
 import MessageLexer from './classes/MessageLexer';
 
 export default class ErisClient {
-  public bot: Client;
-  public commands: Command[] = [];
+  bot: Client;
   public redis = createClient();
-
   constructor(discordClient: Client) {
     this.bot = discordClient;
 
