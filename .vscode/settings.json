@@ -3,11 +3,5 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "conventionalCommits.scopes": [
-    "upstream",
-    "base",
-    "readme",
-    "lexer",
-    "commands"
-  ]
+  "conventionalCommits.scopes": ["upstream", "base", "readme", "lexer"]
 }
