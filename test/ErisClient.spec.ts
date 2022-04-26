@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -22,6 +23,7 @@ describe('ErisBot', () => {
   };
 
   it('should create an instance', () => {
+    //@ts-expect-error - Mock
     erisClient = new ErisClient(discordClient);
     expect(erisClient).toBeTruthy();
     expect(discordClient.on).toHaveBeenCalled();
@@ -39,6 +41,7 @@ describe('ErisBot', () => {
   it('should have created a redis instance', () => {
     expect(erisClient.redis).toBeDefined();
     // For future tests, we'll need to mock the redis client
+    //@ts-expect-error - Mock
     erisClient.redis = redis;
   });
 
@@ -54,6 +57,7 @@ describe('ErisBot', () => {
     const msg = {
       content: '',
     };
+    //@ts-expect-error - Mock
     erisClient.onMessage(msg);
   });
 
@@ -63,6 +67,7 @@ describe('ErisBot', () => {
         id: '123',
       },
     };
+    //@ts-expect-error - Mock
     const result = await erisClient.onMessage(msg);
     expect(result).toBeUndefined();
   });
@@ -79,9 +84,11 @@ describe('ErisBot', () => {
       content: 'Test Message',
       id: '1',
     };
+    //@ts-expect-error - Mock
     erisClient.conversationManager.addToOrNewConversation = jest.fn(
       () => conversation
     );
+    //@ts-expect-error - Mock
     await erisClient.onMessage(msg);
     expect(conversation.executeDirectives).toHaveBeenCalled();
   });
