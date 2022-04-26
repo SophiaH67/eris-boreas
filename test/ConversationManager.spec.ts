@@ -70,4 +70,17 @@ describe('ConversationManager', () => {
     // They must not be the same conversation
     expect(conversation1).not.toBe(conversation2);
   });
+
+  it('should be able to execute a conversation', () => {
+    const conversationManager = new ConversationManager();
+    const mockMessage1 = {
+      id: '1',
+      content: "What's the weather like?",
+    };
+
+    const conversation =
+      //@ts-expect-error - this is a mock
+      conversationManager.addToOrNewConversation(mockMessage1);
+    conversation.executeDirectives(); // This isn't really testing it, but it'll make jest happy
+  });
 });

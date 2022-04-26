@@ -40,4 +40,11 @@ export default class Conversation {
     this.directives = this.directives.map(directive => directive.trim());
     this.directives = this.directives.filter(Boolean);
   }
+
+  public executeDirectives() {
+    this.directives.forEach(directive => {
+      // @TODO: Implement directive execution
+      console.log(`Executing directive: ${directive}`);
+    });
+  }
 }

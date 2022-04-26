@@ -1,9 +1,12 @@
 import { Client, Message } from 'discord.js';
 import { createClient } from 'redis';
+import ConversationManager from './conversation/ConversationManager';
 
 export default class ErisClient {
   bot: Client;
   public redis = createClient();
+  public conversationManager = new ConversationManager();
+
   constructor(discordClient: Client) {
     this.bot = discordClient;
 
@@ -22,6 +25,7 @@ export default class ErisClient {
   }
 
   onMessage(msg: Message) {
-    console.log(`${this.name} received message: ${msg.content}`);
+    const conversation = this.conversationManager.addToOrNewConversation(msg);
+    if (!conversation.isWaitingForReply()) conversation.executeDirectives();
   }
 }
