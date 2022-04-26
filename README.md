@@ -20,7 +20,7 @@ npm install eris-boreas
 ## Usage
 
 ```ts
-import { ErisClient } from 'eris-boreas';
+import ErisClient from 'eris-boreas';
 import { Client } from 'discord.js';
 
 class MyClient extends ErisClient {
