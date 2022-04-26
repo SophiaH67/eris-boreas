@@ -1,5 +1,3 @@
 import ErisClient from './ErisClient';
 
-module.exports = {
-  ErisClient,
-};
+export default ErisClient;
