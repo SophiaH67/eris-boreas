@@ -2,7 +2,7 @@ import ErisClient from '../ErisClient';
 import Conversation from './Conversation';
 import Command from './Command';
 
-function findCommand(
+export function findCommand(
   commands: Command[],
   directive: string
 ): [Command, string] | [undefined, undefined] {
@@ -10,7 +10,7 @@ function findCommand(
   for (const command of commands) {
     for (const alias of command.aliases) {
       if (directive.startsWith(alias)) {
-        return [command, directive.substring(alias.length).trim()];
+        return [command, alias];
       }
     }
   }
@@ -34,8 +34,7 @@ export default class DirectiveHandler {
         .match(/[^\s"']+|"([^"]*)"|'([^']*)'/) ?? [];
 
     try {
-      const result = await command.run(conversation, args);
-      return result;
+      return await command.run(conversation, args);
     } catch (e) {
       return `there was a problem: ${
         e instanceof Error ? e.message : (e as string)
