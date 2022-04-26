@@ -1,11 +1,14 @@
 import { Client, Message } from 'discord.js';
 import { createClient } from 'redis';
 import ConversationManager from './conversation/ConversationManager';
+import DirectiveHandler from './conversation/DirectiveHandler';
+import ErisMessage from './interfaces/ErisMessage';
 
 export default class ErisClient {
   bot: Client;
   public redis = createClient();
   public conversationManager = new ConversationManager();
+  public directiveHandler = new DirectiveHandler(this);
 
   constructor(discordClient: Client) {
     this.bot = discordClient;
@@ -24,8 +27,12 @@ export default class ErisClient {
     console.log(`${this.name} is ready!, database ping: ${ping}`);
   }
 
-  onMessage(msg: Message) {
+  async onMessage(_msg: Message) {
+    (_msg as ErisMessage).eris = this;
+    const msg = _msg as ErisMessage;
     const conversation = this.conversationManager.addToOrNewConversation(msg);
-    if (!conversation.isWaitingForReply()) conversation.executeDirectives();
+    if (!conversation.isWaitingForReply()) {
+      await conversation.executeDirectives();
+    }
   }
 }

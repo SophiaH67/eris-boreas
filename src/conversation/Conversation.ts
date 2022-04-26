@@ -1,13 +1,16 @@
-import { Message } from 'discord.js';
+import ErisClient from '../ErisClient';
+import ErisMessage from '../interfaces/ErisMessage';
 
 export default class Conversation {
-  public messages: Message[] = [];
+  public messages: ErisMessage[] = [];
   public directives: string[] = [];
   public target = ''; // Intended user
-  public reference: Message;
+  public reference: ErisMessage;
+  public eris: ErisClient;
 
-  constructor(reference: Message) {
+  constructor(reference: ErisMessage) {
     this.reference = reference;
+    this.eris = reference.eris;
   }
 
   public isWaitingForReply() {
@@ -17,7 +20,7 @@ export default class Conversation {
     );
   }
 
-  public addMessage(message: Message) {
+  public addMessage(message: ErisMessage) {
     if (this.isWaitingForReply()) this.directives.pop(); // Remove 'Also' directive
 
     this.messages.push(message);
@@ -41,10 +44,18 @@ export default class Conversation {
     this.directives = this.directives.filter(Boolean);
   }
 
-  public executeDirectives() {
-    this.directives.forEach(directive => {
-      // @TODO: Implement directive execution
-      console.log(`Executing directive: ${directive}`);
-    });
+  public async executeDirectives() {
+    const unfilteredAnswers = await Promise.all(
+      this.directives.map(directive =>
+        this.eris.directiveHandler.handleDirective(this, directive)
+      )
+    );
+    // Remove undefined answers
+    let answers = unfilteredAnswers.filter(Boolean) as string[];
+    // Remove empty answers
+    answers = answers.filter(answer => answer.trim());
+    return await Promise.all(
+      answers.map(answer => this.reference.reply(answer))
+    );
   }
 }
