@@ -41,7 +41,6 @@ describe('ConversationManager', () => {
 
     //@ts-expect-error - this is a mock
     conversation = conversationManager.addToOrNewConversation(mockMessage2);
-    console.log(conversation.directives);
     expect(conversation.directives[1]).toBe("What's up?");
   });
 
@@ -71,16 +70,23 @@ describe('ConversationManager', () => {
     expect(conversation1).not.toBe(conversation2);
   });
 
-  it('should be able to execute a conversation', () => {
+  it('should be able to execute a conversation', async () => {
     const conversationManager = new ConversationManager();
     const mockMessage1 = {
       id: '1',
       content: "What's the weather like?",
+      eris: {
+        directiveHandler: {
+          handleDirective: jest.fn(() => Promise.resolve('It is sunny')),
+        },
+      },
+      reply: jest.fn(),
     };
 
     const conversation =
       //@ts-expect-error - this is a mock
       conversationManager.addToOrNewConversation(mockMessage1);
-    conversation.executeDirectives(); // This isn't really testing it, but it'll make jest happy
+    await conversation.executeDirectives(); // This isn't really testing it, but it'll make jest happy
+    expect(mockMessage1.reply).toHaveBeenCalledWith('It is sunny');
   });
 });

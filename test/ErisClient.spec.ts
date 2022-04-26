@@ -11,6 +11,9 @@ describe('ErisBot', () => {
   const discordClient = {
     login: jest.fn(),
     on: jest.fn(),
+    user: {
+      id: '123',
+    },
   };
 
   const redis = {
@@ -52,5 +55,34 @@ describe('ErisBot', () => {
       content: '',
     };
     erisClient.onMessage(msg);
+  });
+
+  it('should return early if bot id is author id', async () => {
+    const msg = {
+      author: {
+        id: '123',
+      },
+    };
+    const result = await erisClient.onMessage(msg);
+    expect(result).toBeUndefined();
+  });
+
+  it("should call conversation.executeDirectives if it's not waiting for a reply", async () => {
+    const conversation = {
+      executeDirectives: jest.fn(async () => {}),
+      isWaitingForReply: jest.fn(() => false),
+    };
+    const msg = {
+      author: {
+        id: '1',
+      },
+      content: 'Test Message',
+      id: '1',
+    };
+    erisClient.conversationManager.addToOrNewConversation = jest.fn(
+      () => conversation
+    );
+    await erisClient.onMessage(msg);
+    expect(conversation.executeDirectives).toHaveBeenCalled();
   });
 });
