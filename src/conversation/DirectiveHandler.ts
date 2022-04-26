@@ -31,7 +31,7 @@ export default class DirectiveHandler {
       directive
         .substring(alias.length)
         .trim()
-        .match(/[^\s"']+|"([^"]*)"|'([^']*)'/) ?? [];
+        .match(/[^\s"']+|"([^"]*)"|'([^']*)'/g) ?? [];
 
     try {
       return await command.run(conversation, args);

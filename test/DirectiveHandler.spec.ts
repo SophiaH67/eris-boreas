@@ -8,12 +8,19 @@ describe('DirectiveHandler', () => {
   const mockEris = {
     commands: [
       {
-        name: 'mock',
         aliases: ['mock'],
         description: 'mock command',
         usage: 'mock',
         run: jest.fn(async (conversation: any, args: string[]) => {
           return 'mock';
+        }),
+      },
+      {
+        aliases: ['error'],
+        description: 'error command',
+        usage: 'error',
+        run: jest.fn(async (conversation: any, args: string[]) => {
+          throw new Error('error');
         }),
       },
     ],
@@ -41,9 +48,24 @@ describe('DirectiveHandler', () => {
     const result = await directiveHandler.handleDirective(
       //@ts-expect-error - conversation is mocked
       mockConversation,
-      'mock'
+      'mock with args'
     );
     expect(result).toBe('mock');
-    expect(mockEris.commands[0].run).toHaveBeenCalledWith(mockConversation, []);
+    expect(mockEris.commands[0].run).toHaveBeenCalledWith(mockConversation, [
+      'with',
+      'args',
+    ]);
+  });
+
+  it('should handle an error', async () => {
+    const mockConversation = {};
+
+    const result = await directiveHandler.handleDirective(
+      //@ts-expect-error - conversation is mocked
+      mockConversation,
+      'error'
+    );
+    expect(result).toBe('there was a problem: error');
+    expect(mockEris.commands[1].run).toHaveBeenCalledWith(mockConversation, []);
   });
 });
