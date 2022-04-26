@@ -1,5 +1,6 @@
 import { Client, Message } from 'discord.js';
 import { createClient } from 'redis';
+import Command from './conversation/Command';
 import ConversationManager from './conversation/ConversationManager';
 import DirectiveHandler from './conversation/DirectiveHandler';
 import ErisMessage from './interfaces/ErisMessage';
@@ -9,6 +10,7 @@ export default class ErisClient {
   public redis = createClient();
   public conversationManager = new ConversationManager();
   public directiveHandler = new DirectiveHandler(this);
+  public commands: Command[] = [];
 
   constructor(discordClient: Client) {
     this.bot = discordClient;

@@ -4,7 +4,7 @@ import ErisMessage from '../interfaces/ErisMessage';
 export default class Conversation {
   public messages: ErisMessage[] = [];
   public directives: string[] = [];
-  public target = ''; // Intended user
+  public target: string | null = null; // Intended user
   public reference: ErisMessage;
   public eris: ErisClient;
 
