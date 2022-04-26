@@ -30,7 +30,7 @@ export default class ErisClient {
   async onMessage(_msg: Message) {
     (_msg as ErisMessage).eris = this;
     const msg = _msg as ErisMessage;
-    if (msg.author.id === this.bot.user?.id) return;
+    if (msg.author?.id === this.bot?.user?.id) return;
     const conversation = this.conversationManager.addToOrNewConversation(msg);
     if (!conversation.isWaitingForReply()) {
       await conversation.executeDirectives();
