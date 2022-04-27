@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Command from '../src/conversation/Command';
-import Conversation from '../src/conversation/Conversation';
+import IncomingConversation from '../src/conversation/IncomingConversation';
 
 describe('Command', () => {
   // Command is an abstract class, so we can't instantiate it
@@ -11,7 +11,7 @@ describe('Command', () => {
     public description = 'mock command';
     public usage = 'mock';
 
-    public run = jest.fn(async (conversation: Conversation, args: string[]) => {
+    public run = jest.fn(async (conversation: IncomingConversation, args: string[]) => {
       return 'mock';
     });
   }

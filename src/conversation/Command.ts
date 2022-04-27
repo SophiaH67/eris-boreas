@@ -1,4 +1,4 @@
-import Conversation from './Conversation';
+import IncomingConversation from './IncomingConversation';
 
 export default abstract class Command {
   public abstract aliases: string[];
@@ -6,7 +6,7 @@ export default abstract class Command {
   public abstract usage: string;
 
   public abstract run(
-    conversation: Conversation,
+    conversation: IncomingConversation,
     args: string[]
   ): Promise<string | undefined>;
 }

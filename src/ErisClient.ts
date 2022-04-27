@@ -6,6 +6,7 @@ import { createClient } from 'redis';
 import Command from './conversation/Command';
 import ConversationManager from './conversation/ConversationManager';
 import DirectiveHandler from './conversation/DirectiveHandler';
+import IncomingConversation from './conversation/IncomingConversation';
 import ErisMessage from './interfaces/ErisMessage';
 
 export default class ErisClient {
@@ -37,8 +38,11 @@ export default class ErisClient {
     const msg = _msg as ErisMessage;
     if (msg.author?.id === this.bot?.user?.id) return;
     const conversation = this.conversationManager.addToOrNewConversation(msg);
-    if (!conversation.isWaitingForReply()) {
-      await conversation.executeDirectives();
+    if (
+      !conversation.isWaitingForReply() &&
+      (conversation as IncomingConversation).executeDirectives
+    ) {
+      await (conversation as IncomingConversation).executeDirectives();
     }
   }
 

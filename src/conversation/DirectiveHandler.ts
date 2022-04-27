@@ -1,5 +1,5 @@
 import ErisClient from '../ErisClient';
-import Conversation from './Conversation';
+import IncomingConversation from './IncomingConversation';
 import Command from './Command';
 
 export function findCommand(
@@ -21,7 +21,7 @@ export default class DirectiveHandler {
   constructor(public eris: ErisClient) {}
   // eslint-disable-next-line @typescript-eslint/require-await
   public async handleDirective(
-    conversation: Conversation,
+    conversation: IncomingConversation,
     directive: string
   ): Promise<string | undefined> {
     const [command, alias] = findCommand(this.eris.commands, directive);

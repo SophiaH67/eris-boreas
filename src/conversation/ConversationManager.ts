@@ -1,8 +1,12 @@
+import { DMChannel, TextChannel } from 'discord.js';
+import ErisClient from '../ErisClient';
 import ErisMessage from '../interfaces/ErisMessage';
 import Conversation from './Conversation';
+import IncomingConversation from './IncomingConversation';
+import OutgoingConversation from './OutgoingConversation';
 
 export default class ConversationManager {
-  public conversations: { [key: string]: Conversation } = {};
+  public conversations: { [key: string]: Conversation | undefined } = {};
 
   public addToOrNewConversation(message: ErisMessage): Conversation {
     const conversation = this.getOrCreateConversation(message);
@@ -15,6 +19,26 @@ export default class ConversationManager {
     if (conversation && conversation.isWaitingForReply()) {
       return conversation;
     }
-    return (this.conversations[message.id] = new Conversation(message));
+    return (this.conversations[message.id] = new IncomingConversation(message));
+  }
+
+  public askOtherBot(
+    eris: ErisClient,
+    botId: string,
+    directives: string[],
+    channel: DMChannel | TextChannel
+  ): Promise<string[]> {
+    const conversation = new OutgoingConversation(
+      eris,
+      botId,
+      directives,
+      channel
+    );
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    return new Promise<string[]>((resolve, _reject) => {
+      conversation.callbacks.push(conversation =>
+        resolve(conversation.directives)
+      );
+    });
   }
 }
