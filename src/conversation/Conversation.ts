@@ -1,3 +1,4 @@
+import { DMChannel, TextChannel } from 'discord.js';
 import ErisClient from '../ErisClient';
 import ErisMessage from '../interfaces/ErisMessage';
 
@@ -44,5 +45,35 @@ export default abstract class Conversation {
     // Trim and remove empty directives
     this.directives = this.directives.map(directive => directive.trim());
     this.directives = this.directives.filter(Boolean);
+  }
+
+  public async replyWithDirectives(
+    directives: string[],
+    channel?: DMChannel | TextChannel
+  ) {
+    if (!channel) channel = this.reference?.channel as DMChannel | TextChannel;
+    if (!channel) return;
+
+    const messages: string[] = [];
+    let currentMessage = this.target ? `<@!${this.target}> ` : '';
+    for (const directive of directives) {
+      if (currentMessage.length + directive.length > 1900) {
+        messages.push(`${currentMessage}\n\nAlso`);
+        currentMessage = '';
+      }
+      currentMessage += `${directive}\n\n`;
+    }
+    messages.push(currentMessage);
+
+    // Send each message one by one, all replying to the first one
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const reference = await channel.send(messages.shift()!);
+    this.eris.conversationManager.conversations[reference.id] = this;
+    (reference as ErisMessage).eris = this.eris;
+    this.reference = reference as ErisMessage;
+
+    for (const message of messages) {
+      await this.reference.reply(message);
+    }
   }
 }
