@@ -11,9 +11,11 @@ describe('Command', () => {
     public description = 'mock command';
     public usage = 'mock';
 
-    public run = jest.fn(async (conversation: IncomingConversation, args: string[]) => {
-      return 'mock';
-    });
+    public run = jest.fn(
+      async (conversation: IncomingConversation, args: string[]) => {
+        return 'mock';
+      }
+    );
   }
 
   const mockCommand = new MockCommand();
