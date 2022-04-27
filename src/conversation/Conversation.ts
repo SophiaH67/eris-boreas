@@ -45,4 +45,18 @@ export default abstract class Conversation {
     this.directives = this.directives.map(directive => directive.trim());
     this.directives = this.directives.filter(Boolean);
   }
+
+  public splitDirectivesToMessages(directives: string[]): string[] {
+    const messages: string[] = [];
+    let currentMessage = '';
+    for (const directive of directives) {
+      if (directive.length + currentMessage.length > 1950) {
+        messages.push(currentMessage + '\n\nAlso');
+        currentMessage = '';
+      }
+      currentMessage += `${directive}\n\n`;
+    }
+    messages.push(currentMessage);
+    return messages.map(message => message.trim()).filter(Boolean);
+  }
 }

@@ -16,16 +16,8 @@ export default class OutgoingConversation extends Conversation {
     this.target = target;
 
     // Join directives with \n\n, splitting every 1900 characters, and adding an `Also` directive if needed
-    const messages: string[] = [];
-    let currentMessage = this.target ? `<@!${this.target}> ` : '';
-    for (const directive of directives) {
-      if (currentMessage.length + directive.length > 1900) {
-        messages.push(`${currentMessage}\n\nAlso`);
-        currentMessage = '';
-      }
-      currentMessage += `${directive}\n\n`;
-    }
-    messages.push(currentMessage);
+    const messages = this.splitDirectivesToMessages(directives);
+    if (this.target) messages[0] = `<@!${this.target}> ${messages[0]}`;
 
     // Send each message one by one, all replying to the first one
     // eslint-disable-next-line @typescript-eslint/no-floating-promises

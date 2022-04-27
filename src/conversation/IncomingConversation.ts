@@ -26,8 +26,10 @@ export default class IncomingConversation extends Conversation {
     let answers = unfilteredAnswers.filter(Boolean) as string[];
     // Remove empty answers
     answers = answers.filter(answer => answer.trim());
-    return await Promise.all(
-      answers.map(answer => this.reference.reply(answer))
-    );
+    answers = this.splitDirectivesToMessages(answers);
+    // Send all answers
+    for (const answer of answers) {
+      await this.reference.reply(answer);
+    }
   }
 }
