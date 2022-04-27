@@ -8,16 +8,16 @@ export default class OutgoingConversation extends Conversation {
 
   constructor(
     eris: ErisClient,
-    target: string,
     directives: string[],
-    channel: DMChannel | TextChannel
+    channel: DMChannel | TextChannel,
+    target?: string
   ) {
     super(eris);
     this.target = target;
 
     // Join directives with \n\n, splitting every 1900 characters, and adding an `Also` directive if needed
     const messages: string[] = [];
-    let currentMessage = '';
+    let currentMessage = this.target ? `<@!${this.target}> ` : '';
     for (const directive of directives) {
       if (currentMessage.length + directive.length > 1900) {
         messages.push(`${currentMessage}\n\nAlso`);

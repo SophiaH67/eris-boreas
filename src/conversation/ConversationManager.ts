@@ -24,15 +24,15 @@ export default class ConversationManager {
 
   public askOtherBot(
     eris: ErisClient,
-    botId: string,
     directives: string[],
-    channel: DMChannel | TextChannel
+    channel: DMChannel | TextChannel,
+    target?: string
   ): Promise<string[]> {
     const conversation = new OutgoingConversation(
       eris,
-      botId,
       directives,
-      channel
+      channel,
+      target
     );
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     return new Promise<string[]>((resolve, _reject) => {
