@@ -32,6 +32,7 @@ export default class DirectiveHandler {
         .substring(alias.length)
         .trim()
         .match(/[^\s"']+|"([^"]*)"|'([^']*)'/g) ?? [];
+    args.unshift(alias);
 
     try {
       return await command.run(conversation, args);
