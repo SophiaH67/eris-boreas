@@ -9,7 +9,7 @@ export function findCommand(
   // Look for a command where one of the aliases is the start of the directive
   for (const command of commands) {
     for (const alias of command.aliases) {
-      if (directive.startsWith(alias)) {
+      if (directive.toLowerCase().startsWith(alias)) {
         return [command, alias];
       }
     }
