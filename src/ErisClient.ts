@@ -10,7 +10,11 @@ import ErisMessage from './interfaces/ErisMessage';
 
 export default class ErisClient {
   bot: Client;
-  public redis = createClient();
+  public redis = createClient({
+    url: process.env.REDIS_HOST
+      ? `redis://${process.env.REDIS_HOST}`
+      : 'redis://localhost',
+  });
   public conversationManager = new ConversationManager();
   public directiveHandler = new DirectiveHandler(this);
   public commands: Command[] = [];
