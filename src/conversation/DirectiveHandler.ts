@@ -37,6 +37,10 @@ export default class DirectiveHandler {
     try {
       return await command.run(conversation, args);
     } catch (e) {
+      if (e instanceof Error) {
+        // Print the error + stacktrace
+        console.error(e.stack);
+      }
       return `there was a problem: ${
         e instanceof Error ? e.message : (e as string)
       }`;
