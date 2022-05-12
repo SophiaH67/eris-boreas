@@ -6,6 +6,7 @@ export function findCommand(
   commands: Command[],
   directive: string
 ): [Command, string] | [undefined, undefined] {
+  directive = directive.toLowerCase().replace('"', '').trim();
   // Look for a command where one of the aliases is the start of the directive
   for (const command of commands) {
     for (const alias of command.aliases) {
