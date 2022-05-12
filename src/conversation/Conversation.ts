@@ -47,7 +47,9 @@ export default class Conversation {
   public async executeDirectives() {
     const unfilteredAnswers = await Promise.all(
       this.directives.map(directive =>
-        this.eris.directiveHandler.handleDirective(this, directive)
+        this.eris.directiveHandler
+          .handleDirective(this, directive)
+          .then(answer => this.eris.transformMessage(answer))
       )
     );
     // Remove undefined answers

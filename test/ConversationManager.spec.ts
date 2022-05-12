@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/require-await */
 import ConversationManager from '../src/conversation/ConversationManager';
 
 describe('ConversationManager', () => {
@@ -79,6 +80,7 @@ describe('ConversationManager', () => {
         directiveHandler: {
           handleDirective: jest.fn(() => Promise.resolve('It is sunny')),
         },
+        transformMessage: jest.fn(async (msg: string) => msg),
       },
       reply: jest.fn(),
     };

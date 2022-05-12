@@ -46,6 +46,11 @@ export default class ErisClient {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async transformMessage(msg: string | undefined) {
+    return msg;
+  }
+
   loadCommands(path: string) {
     const files = readdirSync(path);
     files.forEach(file => {

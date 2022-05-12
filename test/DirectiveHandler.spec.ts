@@ -6,6 +6,7 @@ import DirectiveHandler, {
 
 describe('DirectiveHandler', () => {
   const mockEris = {
+    transformMessage: jest.fn(async (msg: string) => msg),
     commands: [
       {
         aliases: ['mock'],
