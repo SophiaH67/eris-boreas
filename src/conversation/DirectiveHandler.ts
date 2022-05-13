@@ -42,9 +42,7 @@ export default class DirectiveHandler {
         // Print the error + stacktrace
         console.error(e.stack);
       }
-      return `there was a problem: ${
-        e instanceof Error ? e.message : (e as string)
-      }`;
+      return `there was a problem: ${JSON.stringify(e)}`;
     }
   }
 }

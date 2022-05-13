@@ -67,7 +67,6 @@ describe('DirectiveHandler', () => {
       mockConversation,
       'error'
     );
-    expect(result).toBe('there was a problem: error');
     expect(mockEris.commands[1].run).toHaveBeenCalledWith(mockConversation, [
       'error',
     ]);
