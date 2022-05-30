@@ -62,7 +62,7 @@ export default class Conversation {
         const chunks = [];
         let chunk = '';
         for (const char of answer) {
-          if (chunk.length + char.length > 3000) {
+          if (chunk.length + char.length > 1950) {
             chunks.push(chunk);
             chunk = '';
           }
