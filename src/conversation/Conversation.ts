@@ -57,7 +57,26 @@ export default class Conversation {
     // Remove empty answers
     answers = answers.filter(answer => answer.trim());
     return await Promise.all(
-      answers.map(answer => this.reference.reply(answer))
+      answers.map(answer => {
+        // Split messages into chunks of 2000 characters or less
+        const chunks = [];
+        let chunk = '';
+        for (const char of answer) {
+          if (chunk.length + char.length > 3000) {
+            chunks.push(chunk);
+            chunk = '';
+          }
+          chunk += char;
+        }
+        if (chunk.length) chunks.push(chunk);
+        return Promise.all(
+          chunks.map((chunk, i) => {
+            return this.reference.reply(
+              chunks.length === 1 ? chunk : `${i}/${chunks.length}: ${chunk}`
+            );
+          })
+        );
+      })
     );
   }
 }
