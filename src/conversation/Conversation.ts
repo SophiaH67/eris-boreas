@@ -72,7 +72,9 @@ export default class Conversation {
         return Promise.all(
           chunks.map((chunk, i) => {
             return this.reference.reply(
-              chunks.length === 1 ? chunk : `${i+1}/${chunks.length}: ${chunk}`
+              chunks.length === 1
+                ? chunk
+                : `${i + 1}/${chunks.length}: ${chunk}`
             );
           })
         );
