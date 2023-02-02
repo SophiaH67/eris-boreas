@@ -81,4 +81,8 @@ export default class Conversation {
       })
     );
   }
+
+  public async write(chunk: string) {
+    await this.messages[0].reply(chunk + '\n\n' + 'also');
+  }
 }
