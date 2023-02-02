@@ -56,33 +56,37 @@ export default class Conversation {
     let answers = unfilteredAnswers.filter(Boolean) as string[];
     // Remove empty answers
     answers = answers.filter(answer => answer.trim());
-    return await Promise.all(
-      answers.map(answer => {
-        // Split messages into chunks of 2000 characters or less
-        const chunks = [];
-        let chunk = '';
-        for (const char of answer) {
-          if (chunk.length + char.length > 1950) {
-            chunks.push(chunk);
-            chunk = '';
-          }
-          chunk += char;
-        }
-        if (chunk.length) chunks.push(chunk);
-        return Promise.all(
-          chunks.map((chunk, i) => {
-            return this.reference.reply(
-              chunks.length === 1
-                ? chunk
-                : `${i + 1}/${chunks.length}: ${chunk}`
-            );
-          })
-        );
-      })
-    );
+
+    for (const answer of answers) {
+      await this.write(answer);
+    }
   }
 
-  public async write(chunk: string) {
-    await this.messages[0].reply(chunk + '\n\n' + 'also');
+  public async write(answer: string) {
+    // Split messages into chunks of 2000 characters or less
+    const chunks = [];
+    let chunk = '';
+    for (const char of answer) {
+      if (chunk.length + char.length > 1950) {
+        chunks.push(chunk);
+        chunk = '';
+      }
+      chunk += char;
+    }
+    if (chunk.length) chunks.push(chunk);
+
+    for (const chunk of chunks) {
+      await this.writeRaw(chunk);
+    }
+  }
+
+  public async writeRaw(chunk: string) {
+    let replyMessage = this.messages.find(
+      message => message.author.id === this.eris.bot.user?.id
+    );
+
+    if (!replyMessage) replyMessage = this.reference;
+
+    return await replyMessage.reply(chunk + '\n\nalso');
   }
 }
