@@ -82,7 +82,6 @@ export default class Conversation {
   }
 
   public async writeRaw(chunk: string, last = false) {
-    console.error('messages', this.messages);
     let replyMessage = this.messages.reverse().find(message => {
       return message.author.id === this.eris.bot.user?.id;
     });

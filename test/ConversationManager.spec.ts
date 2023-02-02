@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/require-await */
 import ConversationManager from '../src/conversation/ConversationManager';
+import ErisMessage from '../src/interfaces/ErisMessage';
 
 describe('ConversationManager', () => {
   it('should be defined', () => {
@@ -73,30 +74,33 @@ describe('ConversationManager', () => {
 
   it('should be able to execute a conversation', async () => {
     const conversationManager = new ConversationManager();
-    const mockMessage1 = {
+    const mockMessage1: ErisMessage = {
       id: '1',
       content: "What's the weather like?",
       eris: {
+        //@ts-expect-error - this is a mock
         directiveHandler: {
           handleDirective: jest.fn(() => Promise.resolve('It is sunny')),
         },
         bot: {
+          //@ts-expect-error - this is a mock
           user: {
             id: '12345678',
           },
         },
         transformMessage: jest.fn(async (msg: string) => msg),
       },
+      //@ts-expect-error - this is a mock
       author: {
         id: '12345678',
       },
-      reply: jest.fn(),
+      reply: jest.fn((msg: string) => Promise.resolve(mockMessage1)),
     };
 
     const conversation =
-      //@ts-expect-error - this is a mock
       conversationManager.addToOrNewConversation(mockMessage1);
     await conversation.executeDirectives(); // This isn't really testing it, but it'll make jest happy
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(mockMessage1.reply).toHaveBeenCalledWith('It is sunny');
   });
 });
