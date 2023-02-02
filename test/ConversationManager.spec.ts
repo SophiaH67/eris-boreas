@@ -80,7 +80,15 @@ describe('ConversationManager', () => {
         directiveHandler: {
           handleDirective: jest.fn(() => Promise.resolve('It is sunny')),
         },
+        bot: {
+          user: {
+            id: '12345678',
+          },
+        },
         transformMessage: jest.fn(async (msg: string) => msg),
+      },
+      author: {
+        id: '12345678',
       },
       reply: jest.fn(),
     };

@@ -57,12 +57,13 @@ export default class Conversation {
     // Remove empty answers
     answers = answers.filter(answer => answer.trim());
 
-    for (const answer of answers) {
-      await this.write(answer);
+    for (let i = 0; i < answers.length; i++) {
+      const last = i === answers.length - 1;
+      await this.write(answers[i], true);
     }
   }
 
-  public async write(answer: string) {
+  public async write(answer: string, lastChunk = false) {
     // Split messages into chunks of 2000 characters or less
     const chunks = [];
     let chunk = '';
@@ -75,18 +76,20 @@ export default class Conversation {
     }
     if (chunk.length) chunks.push(chunk);
 
-    for (const chunk of chunks) {
-      await this.writeRaw(chunk);
+    for (let i = 0; i < chunks.length; i++) {
+      const lastChunkChunk = i === chunks.length - 1;
+      await this.writeRaw(chunks[i], lastChunkChunk && lastChunk);
     }
   }
 
-  public async writeRaw(chunk: string) {
+  public async writeRaw(chunk: string, last = false) {
+    console.error('messages', this.messages);
     let replyMessage = this.messages.find(
       message => message.author.id === this.eris.bot.user?.id
     );
 
     if (!replyMessage) replyMessage = this.reference;
 
-    return await replyMessage.reply(chunk + '\n\nalso');
+    return await replyMessage.reply(chunk + (!last ? '\n\nalso' : ''));
   }
 }
