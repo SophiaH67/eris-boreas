@@ -58,7 +58,6 @@ export default class Conversation {
     answers = answers.filter(answer => answer.trim());
 
     for (let i = 0; i < answers.length; i++) {
-      const last = i === answers.length - 1;
       await this.write(answers[i], true);
     }
   }
@@ -84,12 +83,15 @@ export default class Conversation {
 
   public async writeRaw(chunk: string, last = false) {
     console.error('messages', this.messages);
-    let replyMessage = this.messages.find(
-      message => message.author.id === this.eris.bot.user?.id
-    );
+    let replyMessage = this.messages.reverse().find(message => {
+      return message.author.id === this.eris.bot.user?.id;
+    });
 
     if (!replyMessage) replyMessage = this.reference;
 
-    return await replyMessage.reply(chunk + (!last ? '\n\nalso' : ''));
+    const msg = await replyMessage.reply(chunk + (!last ? '\n\nalso' : ''));
+    (msg as ErisMessage).eris = this.eris;
+    this.messages.push(msg as ErisMessage);
+    return msg;
   }
 }
